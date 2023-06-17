@@ -24,7 +24,7 @@ git clone https://github.com/MrKrrot/skyhome.git
 2. Install dependencies:
 
 ```bash
-npm run install # Install server & client dependencies
+npm install # Install server & client dependencies
 ```
 
 3. Set up environment variables:
