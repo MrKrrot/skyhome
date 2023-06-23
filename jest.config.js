@@ -7,7 +7,6 @@ module.exports = {
     NODE_ENV: 'test'
   },
   detectOpenHandles: true,
-  forceExit: true,
   moduleNameMapper: {
     '@config': '<rootDir>/src/config',
     '@controllers': '<rootDir>/src/controllers',
