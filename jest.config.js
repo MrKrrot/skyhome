@@ -1,0 +1,20 @@
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  testMatch: ['**/**/*.test.ts'],
+  verbose: true,
+  testEnvironmentOptions: {
+    NODE_ENV: 'test'
+  },
+  detectOpenHandles: true,
+  forceExit: true,
+  moduleNameMapper: {
+    '@config': '<rootDir>/src/config',
+    '@controllers': '<rootDir>/src/controllers',
+    '@middlewares': '<rootDir>/src/middlewares',
+    '@routes/(.*)': '<rootDir>/src/routes/$1',
+    '@routes': '<rootDir>/src/routes',
+    '@services': '<rootDir>/src/services',
+    '@utils': '<rootDir>/src/utils'
+  }
+}
