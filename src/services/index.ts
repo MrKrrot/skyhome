@@ -1,5 +1,3 @@
-const main = () => {
-  return { message: 'Hello World!' }
-}
+import authService from './auth.service'
 
-export default main
+export { authService }

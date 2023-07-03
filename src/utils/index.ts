@@ -4,6 +4,7 @@ import getColorForLevel from './getColorForLevel'
 import getColorForMethod from './getColorForMethod'
 import getColorForStatusCode from './getColorForStatusCode'
 import getFormatMessage from './getFormatMessage'
+import ServerError from './ServerError'
 
 export {
   logger,
@@ -11,5 +12,6 @@ export {
   getColorForLevel,
   getColorForMethod,
   getColorForStatusCode,
-  getFormatMessage
+  getFormatMessage,
+  ServerError
 }
