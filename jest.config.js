@@ -11,9 +11,11 @@ module.exports = {
     '@config': '<rootDir>/src/config',
     '@controllers': '<rootDir>/src/controllers',
     '@middlewares': '<rootDir>/src/middlewares',
+    '@models': '<rootDir>/src/models',
     '@routes/(.*)': '<rootDir>/src/routes/$1',
     '@routes': '<rootDir>/src/routes',
     '@services': '<rootDir>/src/services',
-    '@utils': '<rootDir>/src/utils'
+    '@utils': '<rootDir>/src/utils',
+    '@validations': '<rootDir>/src/validations'
   }
 }
