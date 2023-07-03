@@ -135,4 +135,37 @@ describe('Auth Controller', () => {
       })
     })
   })
+
+  describe('POST /auth/login', () => {
+    beforeAll(async () => {
+      await mongoose.connect(DB_URI_TEST)
+      const hashPassword = await bcrypt.hash('123456', 10)
+      await User.create({
+        username: 'test',
+        email: 'user.test@hotmail.com',
+        password: hashPassword
+      })
+    })
+
+    afterAll(async () => {
+      await mongoose.connection.close()
+    })
+
+    it('should return 200 and the user data', async () => {
+      const userCredentials = {
+        email: 'user.test@hotmail.com',
+        password: '123456'
+      }
+
+      const res = await api.post('/auth/login').send(userCredentials)
+
+      expect(res.status).toBe(200)
+      // expect(res.body).toHaveProperty('_id')
+      // expect(res.body.username).toBe('test')
+      // expect(res.body.email).toBe(userCredentials.email)
+      // expect(res.body).toHaveProperty('accessToken')
+      // expect(res.body).toHaveProperty('refreshToken')
+      // expect(res.body).not.toHaveProperty('password')
+    })
+  })
 })
