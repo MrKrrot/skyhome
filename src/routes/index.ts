@@ -1,9 +1,10 @@
+import { methodNotAllowed } from '@middlewares'
 import { Router } from 'express'
-
-import main from '@controllers'
 
 const router = Router()
 
-router.use('/', main)
+router.get('/', (req, res) => res.send('Hello World!'))
+
+router.all('/', methodNotAllowed)
 
 export default router

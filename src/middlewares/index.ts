@@ -1,4 +1,6 @@
 import errorHandler from './errorHandler'
+import methodNotAllowed from './methodNotAllowed'
 import routesLogger from './routesLogger'
+import schemaValidator from './schemaValidator'
 
-export { errorHandler, routesLogger }
+export { errorHandler, methodNotAllowed, schemaValidator, routesLogger }

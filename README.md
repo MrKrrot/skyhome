@@ -34,6 +34,7 @@ npm install # Install server & client dependencies
    | Variable             | Description                                          |
    | -------------------- | ---------------------------------------------------- |
    | `DB_URI`             | MongoDB database URI                                 |
+   | `DB_URI_TEST`        | MongoDB database URI for testing                     |
    | `JWT_ACCESS_SECRET`  | Secret key for JWT access token generation           |
    | `JWT_REFRESH_SECRET` | Secret key for JWT refresh token generation          |
    | `NODE_ENV`           | Environment mode (`development`, `production`, etc.) |
