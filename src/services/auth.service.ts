@@ -1,8 +1,30 @@
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 
 import { User, IUser } from '@models'
-import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '@config'
+import { ServerError, generateAccessToken, generateRefreshToken } from '@utils'
+
+const login = async ({ email, password }: IUser) => {
+  const user = await User.findOne({ email })
+
+  if (!user) {
+    throw new ServerError('Incorrect email or password.', 401)
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password)
+
+  if (!isPasswordValid) {
+    throw new ServerError('Incorrect email or password.', 401)
+  }
+
+  const accessToken = generateAccessToken(user._id)
+  const refreshToken = generateRefreshToken(user._id)
+
+  return {
+    ...user.toJSON(),
+    accessToken,
+    refreshToken
+  }
+}
 
 const register = async ({ username, email, password }: IUser) => {
   const passwordHash = await bcrypt.hash(password, 10)
@@ -13,8 +35,8 @@ const register = async ({ username, email, password }: IUser) => {
     password: passwordHash
   })
 
-  const accessToken = jwt.sign({ sub: user._id }, JWT_ACCESS_SECRET, { expiresIn: '15m' })
-  const refreshToken = jwt.sign({ sub: user._id }, JWT_REFRESH_SECRET, { expiresIn: '7d' })
+  const accessToken = generateAccessToken(user._id)
+  const refreshToken = generateRefreshToken(user._id)
 
   return {
     ...user.toJSON(),
@@ -24,5 +46,6 @@ const register = async ({ username, email, password }: IUser) => {
 }
 
 export default {
+  login,
   register
 }

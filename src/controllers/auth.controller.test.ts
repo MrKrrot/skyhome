@@ -111,6 +111,108 @@ describe('Auth Controller', () => {
       })
     })
 
+    it('should return 400 if not send username', async () => {
+      const userCredentials = {
+        email: 'user.test@hotmail.com',
+        password: '123456',
+        passwordConfirmation: '123456'
+      }
+
+      const res = await api.post('/auth/register').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['username is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if not send email', async () => {
+      const userCredentials = {
+        username: 'test',
+        password: '123456',
+        passwordConfirmation: '123456'
+      }
+
+      const res = await api.post('/auth/register').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['email is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if not send password', async () => {
+      const userCredentials = {
+        username: 'test',
+        email: 'user.test@hotmail.com',
+        passwordConfirmation: '12345'
+      }
+
+      const res = await api.post('/auth/register').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['password is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if not send password confirmation', async () => {
+      const userCredentials = {
+        username: 'test',
+        email: 'user.test@hotmail.com',
+        password: '123456'
+      }
+
+      const res = await api.post('/auth/register').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['password confirmation is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if neither username, email, password nor password confirmation are sent', async () => {
+      const res = await api.post('/auth/register').send({})
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: [
+          'username is required',
+          'email is required',
+          'password is required',
+          'password confirmation is required'
+        ],
+        statusCode: 400
+      })
+    })
+
+    it('should return 409 if email is already taken', async () => {
+      const hashPassword = await bcrypt.hash('123456', 10)
+      await User.create({
+        username: 'test',
+        email: 'user.test@hotmail.com',
+        password: hashPassword
+      })
+
+      const userRepeatedCredentials = {
+        username: 'other',
+        email: 'user.test@hotmail.com',
+        password: '123456',
+        passwordConfirmation: '123456'
+      }
+
+      const res = await api.post('/auth/register').send(userRepeatedCredentials)
+
+      expect(res.status).toBe(409)
+      expect(res.body).toMatchObject({
+        message: [`email ${userRepeatedCredentials.email} is already taken.`],
+        statusCode: 409
+      })
+    })
+
     it('should return 409 if username is already taken', async () => {
       const hashPassword = await bcrypt.hash('123456', 10)
       await User.create({
@@ -130,7 +232,7 @@ describe('Auth Controller', () => {
 
       expect(res.status).toBe(409)
       expect(res.body).toMatchObject({
-        message: ['username test is already taken.'],
+        message: [`username ${userRepeatedCredentials.username} is already taken.`],
         statusCode: 409
       })
     })
@@ -160,12 +262,80 @@ describe('Auth Controller', () => {
       const res = await api.post('/auth/login').send(userCredentials)
 
       expect(res.status).toBe(200)
-      // expect(res.body).toHaveProperty('_id')
-      // expect(res.body.username).toBe('test')
-      // expect(res.body.email).toBe(userCredentials.email)
-      // expect(res.body).toHaveProperty('accessToken')
-      // expect(res.body).toHaveProperty('refreshToken')
-      // expect(res.body).not.toHaveProperty('password')
+      expect(res.body).toHaveProperty('_id')
+      expect(res.body.username).toBe('test')
+      expect(res.body.email).toBe(userCredentials.email)
+      expect(res.body).toHaveProperty('accessToken')
+      expect(res.body).toHaveProperty('refreshToken')
+      expect(res.body).not.toHaveProperty('password')
+    })
+
+    it('should return 401 if email is incorrect', async () => {
+      const userCredentials = {
+        email: 'not.email@hotmail.com',
+        password: '123456'
+      }
+
+      const res = await api.post('/auth/login').send(userCredentials)
+
+      expect(res.status).toBe(401)
+      expect(res.body).toMatchObject({
+        message: 'Incorrect email or password.',
+        statusCode: 401
+      })
+    })
+
+    it('should return 401 if password is incorrect', async () => {
+      const userCredentials = {
+        email: 'user.test@hotmail.com',
+        password: 'incorrect'
+      }
+
+      const res = await api.post('/auth/login').send(userCredentials)
+
+      expect(res.status).toBe(401)
+      expect(res.body).toMatchObject({
+        message: 'Incorrect email or password.',
+        statusCode: 401
+      })
+    })
+
+    it('should return 400 if not send email', async () => {
+      const userCredentials = {
+        password: '123456'
+      }
+
+      const res = await api.post('/auth/login').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['email is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if not send password', async () => {
+      const userCredentials = {
+        email: 'user.test@hotmail.com'
+      }
+
+      const res = await api.post('/auth/login').send(userCredentials)
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['password is required'],
+        statusCode: 400
+      })
+    })
+
+    it('should return 400 if neither email nor password are sent', async () => {
+      const res = await api.post('/auth/login').send({})
+
+      expect(res.status).toBe(400)
+      expect(res.body).toMatchObject({
+        message: ['email is required', 'password is required'],
+        statusCode: 400
+      })
     })
   })
 })

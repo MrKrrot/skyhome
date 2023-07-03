@@ -1,7 +1,7 @@
 import { Schema, model, Document } from 'mongoose'
 
 export interface IUser {
-  username: string
+  username?: string
   email: string
   password: string
 }
@@ -10,7 +10,7 @@ const userSchema = new Schema<IUser, Document>({
   username: {
     type: String,
     unique: true,
-    required: [true, 'username is required.'],
+    required: [true, 'username is required'],
     validate: {
       validator: async (value: string) => {
         const usernameCount = await model('User').countDocuments({ username: value })
@@ -21,7 +21,7 @@ const userSchema = new Schema<IUser, Document>({
   email: {
     type: String,
     unique: true,
-    required: [true, 'email is required.'],
+    required: [true, 'email is required'],
     validate: {
       validator: async (value: string) => {
         const emailCount = await model('User').countDocuments({ email: value })
@@ -31,7 +31,7 @@ const userSchema = new Schema<IUser, Document>({
   },
   password: {
     type: String,
-    required: [true, 'password is required.']
+    required: [true, 'password is required']
   }
 })
 

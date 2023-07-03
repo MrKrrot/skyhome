@@ -19,5 +19,13 @@ export const createUserSchema = object({
   path: ['passwordConfirmation']
 })
 
+export const loginUserSchema = object({
+  email: string({ required_error: 'email is required' }),
+  password: string({ required_error: 'password is required' })
+})
+
+export type LoginUserSchema = TypeOf<typeof loginUserSchema>
 export type CreateUserSchema = TypeOf<typeof createUserSchema>
+
+export type LoginRequest = Request<object, object, LoginUserSchema>
 export type RegisterRequest = Request<object, object, CreateUserSchema>

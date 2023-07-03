@@ -1,3 +1,17 @@
-import { createUserSchema, CreateUserSchema, RegisterRequest } from './user.schema'
+import {
+  createUserSchema,
+  CreateUserSchema,
+  RegisterRequest,
+  loginUserSchema,
+  LoginRequest,
+  LoginUserSchema
+} from './user.schema'
 
-export { createUserSchema, CreateUserSchema, RegisterRequest }
+export {
+  createUserSchema,
+  CreateUserSchema,
+  RegisterRequest,
+  loginUserSchema,
+  LoginRequest,
+  LoginUserSchema
+}
