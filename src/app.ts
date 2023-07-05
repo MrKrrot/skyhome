@@ -7,7 +7,7 @@ import listEndpoints from 'express-list-endpoints'
 import { NODE_ENV } from '@config'
 import { errorHandler, routesLogger } from '@middlewares'
 import apiRoutes from '@routes'
-import authRoutes from '@routes/auth.routes'
+import authRoutes from '@routes/auth'
 import { logger, getColorForMethod, ServerError } from '@utils'
 
 const app = express()
