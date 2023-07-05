@@ -6,7 +6,7 @@ import listEndpoints from 'express-list-endpoints'
 
 import { NODE_ENV } from '@config'
 import { errorHandler, routesLogger } from '@middlewares'
-import apiRoutes from '@routes'
+import apiRoutes from '@routes/api'
 import authRoutes from '@routes/auth'
 import { logger, getColorForMethod, ServerError } from '@utils'
 
@@ -35,7 +35,7 @@ if (NODE_ENV === 'development') {
   logger.info('+Available routes:')
   listEndpoints(app).forEach(route => {
     route.methods.forEach(method => {
-      logger.info(`- ${getColorForMethod(method)} \t${route.path}`)
+      logger.info(`- ${getColorForMethod(method)}   \t${route.path}`)
     })
   })
 }
