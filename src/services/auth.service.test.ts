@@ -1,4 +1,3 @@
-// Create login and register functions that return the user object with the access and refresh tokens.
 import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 
